@@ -1,8 +1,6 @@
 llm_providers:
   openai:
     api_key: "YOU_API_KEY"
-proxy:
-  address: "YOUR_PROXY_SERVER_IF_YOU_CANT_DIRECTLY_ACCESS_OPENAI"
 store:
   collection_name: "DATABASE_NAME_FOR_EXEMPLAR"
   address: "QDRANT_SERVER_ADDRESS"

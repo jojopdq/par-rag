@@ -26,7 +26,6 @@ def init_langchain_model(llm: str, model_name: str, temperature: float = 0.0, ma
     :param model_name: The model name to use, e.g., 'gpt-3.5-turbo'
     """
     llm_providers = config.get('llm_providers', {})
-    proxy = config.get('proxy', {}).get('address')
     llm_provider = llm_providers.get(llm, {})
     if llm == 'openai':
         # https://python.langchain.com/v0.1/docs/integrations/chat/openai/
@@ -34,15 +33,9 @@ def init_langchain_model(llm: str, model_name: str, temperature: float = 0.0, ma
         assert model_name.startswith('gpt-')
         api_key = llm_provider.get('api_key')
         os.environ['OPENAI_API_KEY'] = api_key
-        if proxy:
-            return ChatOpenAI(api_key=os.environ.get("OPENAI_API_KEY"), model=model_name, temperature=temperature,
-                              max_retries=max_retries, timeout=timeout,
-                              openai_proxy=proxy,
-                              **kwargs)
-        else:
-            return ChatOpenAI(api_key=os.environ.get("OPENAI_API_KEY"), model=model_name, temperature=temperature,
-                              max_retries=max_retries, timeout=timeout,
-                              **kwargs)
+        return ChatOpenAI(api_key=os.environ.get("OPENAI_API_KEY"), model=model_name, temperature=temperature,
+                          max_retries=max_retries, timeout=timeout,
+                          **kwargs)
     elif llm == 'together':
         # https://python.langchain.com/v0.1/docs/integrations/chat/together/
         from langchain_together import ChatTogether
